@@ -1,0 +1,235 @@
+{% load static %}
+<!doctype html>
+<html>
+
+<head>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-KyZXEAg3QhqLMpG8r+8fhAXLRk2vvoC2f3B09zVXn8CA5QIVfZOJ3BCsw2P0p/We" crossorigin="anonymous">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans&family=Noto+Sans+KR:wght@100;300;400;500&display=swap"
+        rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-U1DAWAznBHeqEIlVSCgzq+c9gqGAJn5c/t99JyeKa9xxaYpSvHU5awsuZVVFIhvj" crossorigin="anonymous"></script>
+    <style>
+        #blue {
+            color: #4B73FF;
+        }
+
+        #lgray {
+            color: #838383
+        }
+
+        #activate {
+            background-color: #4B73FF;
+            color: white;
+            border-radius: 10px;
+            margin-right: 10px;
+        }
+
+        #disabled {
+            background: white;
+            color: black;
+            border-radius: 10px;
+            margin-right: 10px;
+        }
+
+        * {
+            font-family: 'Noto Sans', 'Noto Sans KR', sans-serif;
+        }
+
+        .o {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-flow: wrap;
+            font-size: 15px;
+            margin-bottom: 20px;
+
+        }
+
+        .i {
+            width: 32vw;
+            border-radius: 15px;
+            font-size: 15px;
+            background-color: white;
+            margin-top: 20px;
+            margin-right: 20px;
+        }
+
+        .content {
+            padding: 40px;
+            padding-top: 20px;
+        }
+
+        .button {
+            background-color: #4b73ff;
+            border-style: none;
+            color: white;
+            padding: 7px 30px;
+            margin: 25px;
+            text-align: center;
+        }
+    </style>
+</head>
+
+<body style="background-color: #f8f8f9;">
+    <div style="display: block; margin-top: 10px;">
+        <ul class="nav justify-content">
+            <img src="{% static 'mold_logo.png' %}" height="36" width="90" alt="몰드 로고"
+                style="margin: 36px; margin-bottom: 15px">
+            <li class="nav-item" style="padding: 22px 22px 0px 610px;">
+                <a class="nav-link" id="lgray" href="{% url 'home' %}">About MOLD</a>
+            </li>
+            <li class="nav-item" style="padding: 22px 22px 0px 22px;">
+                <a class="nav-link" id="lgray" href="{% url 'template' %}">Communication</a>
+            </li>
+            <li class="nav-item" style="padding: 22px 22px 0px 22px;">
+                <a class="nav-link" id="lgray" href="{% url 'communityhome' %}">Community</a>
+            </li>
+            <li class="nav-item" style="padding: 22px 22px 0px 22px;">
+                {% if not user.is_authenticated %}
+                <a class="nav-link" id="blue" href="{% url 'login' %}" tabindex="-1">Log In</a>
+                {% endif %}
+                {% if user.is_authenticated %}
+                <a class="nav-link" id="blue" href="{% url 'article' %}" tabindex="-1">My Page</a>
+                {% endif %}
+            </li>
+            <hr width="2000px"
+                style="text-align: center; margin-left: 160px; margin-top: 5px; border: 0.5px solid rgb(0, 0, 0)">
+        </ul>
+    </div>
+    <div style="display: grid; grid-template-columns: 20% 5% 75%; margin-top: 40px; margin-left: 40px;">
+        <div style="margin-left: 60px; background-color: white; height: 510px; width: 80%; text-align: center;"> 
+            <img src="{% static 'mold_profile.png' %}" height="auto" width="60%" alt="몰드 프사" style="margin-top: 60px; margin-bottom: 40px">           
+            <h3 style="background-color: white; text-align: center; padding-bottom: 7px; margin-top: 8px">{{user.nickname}}</h3>
+            <h5 style="background-color: white; text-align: center; padding-bottom: 7px;">{{user}}</h5>
+            <h6 style="background-color: white; color: #757575; text-align: center; padding-bottom: 30px;">{{user.email}}</h6>
+            <a href="{% url 'logout' %}"><button class="button" style= "height: 50px; border: none; border-radius: 4px;">LOGOUT</button></a>
+            
+        </div>
+        <br>
+        <div>
+        <ul class="nav">
+            <li class="nav-item">
+                <a class="nav-link active" id="activate" href="{% url 'article' %}">작성한 메일</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" id="disabled" href="{% url 'write' %}">작성한 글</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" id="disabled" href="{% url 'mypage' %}">댓글 단 글</a>
+            </li>
+            <div style="margin-top: 20px;">
+                <div class="o">
+                    {% for grade in grades.all %}
+                    
+                    <div class="i">
+                        
+                        <div class="dropdown" style="margin-top: 33px; margin-left: 40px;">
+                            <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+                              E-mail
+                            </button>
+                            <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                              <li><a class="dropdown-item" href="https://mail.naver.com">Naver</a></li>
+                              <li><a class="dropdown-item" href="https://mail.google.com/">Google</a></li>
+                              <li><a class="dropdown-item" href="https://mail.daum.net">Daum</a></li>
+                            </ul>
+                        </div>
+                        
+                        <div class="content">
+                            <h5>{{grade.title}} 성적 관련 문의드립니다</h5>
+                            <p style="color: #757575;">{{grade.pub_date}}</p>
+                            <p>안녕하세요, 교수님.<br>{{grade.subject}} 수강중인 {{grade.sending}}입니다.</p>
+                            <p>다름이 아니라 이번 {{grade.test}} 성적에 대해 아쉬움이 남아 메일을 드리게 되었습니다.<br>
+                                수업을 열심히 들었던 만큼 최선을 다했으나, 부족한 점이 있었는지 아쉬운 점수를 받게 되었습니다.
+                                앞으로 학문적인 발전을 위해, 개선할 점에 대해 말씀해주시면 많은 도움이 될 것 같습니다.</p>
+                            <p>항상 건강 유의하시고, 행복한 하루 되시길 바랍니다.
+                                감사합니다. {{grade.name}} 올림.</p>
+                        </div>
+                    </div>
+                    {% endfor %}
+                    {% for attendance in attendances.all %}
+                    <div class="i">
+                        <div class="dropdown" style="margin-top: 33px; margin-left: 40px;">
+                            <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+                              E-mail
+                            </button>
+                            <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                              <li><a class="dropdown-item" href="https://mail.naver.com">Naver</a></li>
+                              <li><a class="dropdown-item" href="https://mail.google.com/">Google</a></li>
+                              <li><a class="dropdown-item" href="https://mail.daum.net">Daum</a></li>
+                            </ul>
+                        </div>
+                        <div class="content">
+                            <h5>{{attendance.title}} 출결 관련 문의드립니다</h5>
+                            <p style="color: #757575;">{{attendance.pub_date}}</p>
+                            <p>안녕하세요, 교수님. {{attendance.subject}} 수강중인 {{attendance.sending}}입니다.</p>
+                            <p>다름이 아니라 {{attendance.date}} 출결에 대해 문의를 드리고자 메일을 드리게 되었습니다.<br>
+                                {{attendance.evidence}}를 이유로 그 날 수업에 결석 처리가 되었습니다.<br>
+                                혹시 출석으로 인정이 가능한지 여쭤보고 싶습니다.<br>
+                                번거로우시겠지만, 다시 한 번 검토 부탁드립니다.</p>
+                            <p>항상 신경써 주셔서 감사합니다.<br>
+                                {{attendance.name}} 올림.</p>
+                        </div>
+                    </div>
+                    {% endfor %}
+                    {% for meeting in meetings.all %}
+                    <div class="i">
+                        <div class="dropdown" style="margin-top: 33px; margin-left: 40px;">
+                            <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+                              E-mail
+                            </button>
+                            <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                              <li><a class="dropdown-item" href="https://mail.naver.com">Naver</a></li>
+                              <li><a class="dropdown-item" href="https://mail.google.com/">Google</a></li>
+                              <li><a class="dropdown-item" href="https://mail.daum.net">Daum</a></li>
+                            </ul>
+                        </div>
+                        <div class="content">
+                            <h5>{{meeting.title}} 면담 요청 드립니다</h5>
+                            <p style="color: #757575;">{{meeting.pub_date}}</p>
+                            <p>안녕하세요, 교수님. {{meeting.sending}}입니다.</p>
+                            <p>{{meeting.background}}
+                                교수님께서 가능하시다면 {{meeting.time}} 정도 교수님 연구실에 방문하여 이야기 나눠볼 수 있을까요?<br>
+                                교수님께서 면담 가능한 시간을 말씀해주시면 그 때 찾아뵙도록 하겠습니다.
+                            </p>
+                            <p>항상 건강 유의하시고, 행복한 하루 되시길 바랍니다.
+                                감사합니다. {{meeting.name}} 올림.</p>
+                        </div>
+                    </div>
+                    {% endfor %}
+                    {% for recommendation in recommendations.all %}
+                    <div class="i">
+                        <div class="dropdown" style="margin-top: 33px; margin-left: 40px;">
+                            <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+                              E-mail
+                            </button>
+                            <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                              <li><a class="dropdown-item" href="https://mail.naver.com">Naver</a></li>
+                              <li><a class="dropdown-item" href="https://mail.google.com/">Google</a></li>
+                              <li><a class="dropdown-item" href="https://mail.daum.net">Daum</a></li>
+                            </ul>
+                        </div>
+                        <div class="content">
+                            <h5>{{recommendation.title}} 교수님 추천서 관련 문의 드립니다</h5>
+                            <p style="color: #757575;">{{recommendation.pub_date}}</p>
+                            <p>안녕하세요, 교수님. {{recommendation.sending}}입니다.</p>
+                            <p>얼마 전, {{recommendation.event}}에 지원하게 되었습니다.
+                                {{recommendation.intro}} 해당 활동을 위해서는 교수님의 추천서가 필요해 이렇게 연락드리게 되었습니다.<br>
+                                {{recommendation.detail}}
+                            </p>
+                            <p>
+                                교수님의 추천을 받고 싶습니다. 가능하시다면 추천서 작성 부탁드립니다.
+                                항상 건강 유의하시고, 행복한 하루 되시길 바랍니다.
+                                {{recommendation.name}} 올림.</p>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </ul>
+    </div>
+    </div>
+</body>
+
+</html>

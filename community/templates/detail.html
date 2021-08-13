@@ -1,0 +1,130 @@
+{%load static%}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-KyZXEAg3QhqLMpG8r+8fhAXLRk2vvoC2f3B09zVXn8CA5QIVfZOJ3BCsw2P0p/We" crossorigin="anonymous">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Noto+Sans&family=Noto+Sans+KR:wght@100;300;400;500&display=swap"
+        rel="stylesheet">
+    <title>Document</title>
+    <style>
+        * {
+            font-family: 'Noto Sans', 'Noto Sans KR';
+        }
+        #blue {
+            color: #4B73FF
+        }
+        #lgray {
+            color: #838383
+        }
+        .button {
+            background-color: #4b73ff;
+            border-style: none;
+            border-radius: 5px;
+            color: white;
+            padding: 5px 15px;
+            margin-top: 10px;
+            margin-bottom: 20px;
+        }
+        hr{
+            color: gray;
+        }
+        input{
+            width: max-content;
+            height: 32px;
+        }
+        .ud{
+            text-decoration: none;
+            padding-right:5px;
+            color: lightgray;
+            font-size: 15px;
+        }
+        .buttons{
+            float: right;
+        }
+    </style>
+</head>
+
+<body>
+    <div style="display: block; margin-top: 10px;">
+        <ul class="nav justify-content">
+            <img src="{% static 'mold_logo.png' %}" height="36" width="90" alt="몰드 로고" style="margin: 36px; margin-bottom: 15px">
+            <li class="nav-item" style="padding: 22px 22px 0px 610px;">
+                <a class="nav-link" id="lgray" href="{% url 'home' %}">About MOLD</a>
+            </li>
+            <li class="nav-item" style="padding: 22px 22px 0px 22px;">
+                <a class="nav-link" id="lgray" href="{% url 'template' %}">Communication</a>
+            </li>
+            <li class="nav-item" style="padding: 22px 22px 0px 22px;">
+                <a class="nav-link" id="blue" href="{% url 'communityhome' %}">Community</a>
+            </li>
+            <li class="nav-item" style="padding: 22px 22px 0px 22px;">
+                {% if not user.is_authenticated %}
+                <a class="nav-link" id="lgray" href="{% url 'login' %}" tabindex="-1">Log In</a>
+                {% endif %}
+                {% if user.is_authenticated %}
+                <a class="nav-link" id="lgray" href="{% url 'article' %}" tabindex="-1">My Page</a>
+                {% endif %}
+            </li>
+            <hr width="2000px" style="text-align: center; margin-left: 160px; margin-top: 5px; border: 0.5px solid rgb(0, 0, 0)">
+        </ul>
+    </div>
+    <div style="margin: 0px 20%;">
+        <br>
+        <h3 style="font-weight:600;">{{community.title}}</h3>
+        <p><h5><strong>{{community.author}}</strong></h5>
+        <h6 style="color: #525252; font-size: 15px;">{{community.pub_date}}</p></h6>
+        <hr>
+        {% if user.is_authenticated and user == community.author %}
+        <div class="buttons"><a class="ud" href="{% url 'edit' community.id%}">수정</a> <a class="ud" href="{% url 'delete' community.id%}">삭제</a></div>
+        {% endif %}
+        <p style="line-height: 1.5em; padding: 30px 0 30px 0px;">{{community.body}}</p>
+        <hr>
+        {% if user.is_authenticated %}
+        <form method="POST" action="{% url 'newreply' community.id %}">
+            {% csrf_token %}
+            <input type="hidden" value="{{post.id}}" name="community"">
+            <input type="text" name="messages"></input>
+            <button class="button" type="submit">작성</button>
+        </form>
+        {% endif %}
+        {% for reply in community.comments.all %}
+        <div class="reply">
+            {% if user.is_authenticated and user == reply.created_by %}
+            <div class="buttons"><a class="ud" href="{% url 'deletereply' community.id reply.id %}">삭제</a></div>
+            {% endif %}
+            <strong>{{ reply.created_by }} </strong>
+            <h6 style="font-size:smaller; color: #525252;">{{reply.created_at}}</h6>
+            <p>{{reply.messages}}</p>
+            <hr>
+        </div>
+        {% empty %}
+        <p> 아직 작성된 댓글이 없습니다 :( </p>
+        {% endfor %}
+    </div>
+
+    <div style="margin-bottom:30vh"></div>
+    <footer class="bd-footer py-3 mt-3 bg-light" >
+        <div class="container py-3" style="margin-top: 30px;">
+            <div class="row">
+                <div class="mb-3">
+                    <img src="{% static 'mold_logo.png' %}" width="100px"><br>
+                    <div class="footer-copyright py-3">Designed and built with all the love in the world <br>by the MOLD team with the help of our contributors.</div>
+                    <p>
+                        새로운 환경에 적응해야 하는 사회 초년생들이 <br>
+                        더 넓은 사회에서 예의 바른 언어를 구사하는 것을 돕는,<br>
+                        사회 생활 A to Z 가이드 웹사이트<br>
+                        </p>
+                        <p style="color: #838383;">ⓒ 2021. MOLD all rights reserved.</p> 
+                </div>
+            </div>
+        </div>
+    </footer>
+</body>
+
+</html>

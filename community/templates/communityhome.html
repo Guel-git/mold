@@ -1,0 +1,152 @@
+{%load static%}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-KyZXEAg3QhqLMpG8r+8fhAXLRk2vvoC2f3B09zVXn8CA5QIVfZOJ3BCsw2P0p/We" crossorigin="anonymous">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Noto+Sans&family=Noto+Sans+KR:wght@100;300;400;500&display=swap"
+        rel="stylesheet">
+    <title>Document</title>
+    <style>
+        * {
+            font-family: 'Noto Sans', 'Noto Sans KR';
+        }
+        #blue {
+            color: #4B73FF
+        }
+        #lgray {
+            color: #838383
+        }
+        #activate{
+            border-bottom: 2px solid #4b73ff;
+            font-weight: 600;
+            color: #525252;
+        }
+        #disabled{
+            color: #525252;
+            font-weight: 500;
+        }
+        .container2 {
+            display: flex;
+            flex-direction: row;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .table {
+            background-color: #f2f5ff;
+            margin-top: 10px;
+            margin-right: 20px;
+            width: 600px;
+            height: 250px;
+            box-shadow: 3px 3px lightgray;
+        }
+
+        .table:hover {
+            background-color: #f8f8f9;
+        }
+
+        .content {
+            padding: 50px 40px;
+        }
+
+        .button {
+            background-color: #4b73ff;
+            border-style: none;
+            border-radius: 10px;
+            color: white;
+            padding: 7px 30px;
+            margin: 30px 0px 40px 0px;
+            margin-left: 82%;
+        }
+        .category{
+            padding: 5px;
+            width: 81%;
+            margin-left:9%;
+            font-size: 18px;
+        }
+    </style>
+</head>
+
+<body>
+    <div style="display: block; margin-top: 10px;">
+        <ul class="nav justify-content">
+            <img src="{% static 'mold_logo.png' %}" height="36" width="90" alt="몰드 로고" style="margin: 36px; margin-bottom: 15px">
+            <li class="nav-item" style="padding: 22px 22px 0px 610px;">
+                <a class="nav-link" id="lgray" href="{% url 'home' %}">About MOLD</a>
+            </li>
+            <li class="nav-item" style="padding: 22px 22px 0px 22px;">
+                <a class="nav-link" id="lgray" href="{% url 'template' %}">Communication</a>
+            </li>
+            <li class="nav-item" style="padding: 22px 22px 0px 22px;">
+                <a class="nav-link" id="blue" href="{% url 'communityhome' %}">Community</a>
+            </li>
+            <li class="nav-item" style="padding: 22px 22px 0px 22px;">
+                {% if not user.is_authenticated %}
+                <a class="nav-link" id="lgray" href="{% url 'login' %}" tabindex="-1">Log In</a>
+                {% endif %}
+                {% if user.is_authenticated %}
+                <a class="nav-link" id="lgray" href="{% url 'article' %}" tabindex="-1">My Page</a>
+                {% endif %}
+            </li>
+            <hr width="2000px" style="text-align: center; margin-left: 160px; margin-top: 5px; border: 0.5px solid rgb(0, 0, 0)">
+        </ul>
+    </div>
+    {% if user.is_authenticated %}
+    <a href="{% url 'new' %}"><button class="button">작성하기</button></a>
+    {% endif %} 
+            
+    <!--<div class="category">
+        <ul class="nav" style="border-bottom: 0.5px solid #525252;">
+            <li class="nav-item">
+                <a class="nav-link active" id="activate" href="">전체보기</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" id="disabled" href="">대학생활</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" id="disabled" href="">고민상담</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" id="disabled" href="">꿀팁공유</a>
+            </li>          
+        </ul>
+    </div>-->
+    <br>
+    <div class="container2">
+       {% block content %}    
+        {%for community in communitys.all%}
+        <div class="table">
+            <div class="content">
+                <h4 style="font-weight: 600;">{{ community.title }}</h4>
+                <p style="color: #525252;">{{ community.pub_date }}</p>
+                <p style="color:#525252">{{ community.summary }}<a href="{% url 'detail' community.id %}">...more</a></p>
+            </div>
+        </div>
+        {% endfor %}
+        {% endblock %}
+    </div>
+    <div style="margin-bottom:20vh"></div>
+    <footer class="bd-footer py-3 mt-3 bg-light" >
+        <div class="container py-3" style="margin-top: 30px;">
+            <div class="row">
+                <div class="mb-3">
+                    <img src="{% static 'mold_logo.png' %}" width="100px"><br>
+                    <div class="footer-copyright py-3">Designed and built with all the love in the world <br>by the MOLD team with the help of our contributors.</div>
+                    <p>
+                        새로운 환경에 적응해야 하는 사회 초년생들이 <br>
+                        더 넓은 사회에서 예의 바른 언어를 구사하는 것을 돕는,<br>
+                        사회 생활 A to Z 가이드 웹사이트<br>
+                        </p>
+                        <p style="color: #838383;">ⓒ 2021. MOLD all rights reserved.</p> 
+                </div>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>

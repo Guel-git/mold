@@ -1,0 +1,102 @@
+{% load static %}
+<!doctype html>
+<html>
+    <head>
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-KyZXEAg3QhqLMpG8r+8fhAXLRk2vvoC2f3B09zVXn8CA5QIVfZOJ3BCsw2P0p/We" crossorigin="anonymous">
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Noto+Sans&family=Noto+Sans+KR:wght@100;300;400;500&display=swap" rel="stylesheet">
+        <style>
+            input {
+                text-align: center; 
+                height: 30px;
+            }
+            #blue {
+                color: #4B73FF
+            }
+            #lgray {
+                color: #838383
+            }
+            * {
+                font-family: 'Noto Sans', 'Noto Sans KR', sans-serif;
+            }
+            .login-form {position: relative; z-index: 2;}
+            .login-form .text h2 {font-size:24px; color: #4B73FF; font-weight: bolder;}
+            .login-form .idpw .int-area {width: 400px; height: 60px; position: relative;}
+            .login-form .idpw .int-area input {width: 100%; height: 90%; padding: 20px 10px 10px; background-color: transparent; border: 1px solid #D7DFEC; border-radius: 4px; font-size: 18px; color:#4B73FF;}
+        </style>
+    </head>
+
+    <body>
+        <div style="display: block; margin-top: 10px;">
+            <ul class="nav justify-content">
+                <img src="{% static 'mold_logo.png' %}" height="36" width="90" alt="몰드 로고" style="margin: 36px; margin-bottom: 15px">
+                <li class="nav-item" style="padding: 22px 22px 0px 610px;">
+                    <a class="nav-link" id="lgray" href="{% url 'home' %}">About MOLD</a>
+                </li>
+                <li class="nav-item" style="padding: 22px 22px 0px 22px;">
+                    <a class="nav-link" id="lgray" href="{% url 'template' %}">Communication</a>
+                </li>
+                <li class="nav-item" style="padding: 22px 22px 0px 22px;">
+                    <a class="nav-link" id="lgray" href="{% url 'communityhome' %}">Community</a>
+                </li>
+                <li class="nav-item" style="padding: 22px 22px 0px 22px;"> 
+                {% if not user.is_authenticated %}
+                <a class="nav-link" id="blue" href="{% url 'login' %}" tabindex="-1">Log In</a>
+                {% endif %}
+                {% if user.is_authenticated %}
+                <a class="nav-link" id="blue" href="{% url 'article' %}" tabindex="-1">My Page</a>
+                {% endif %}
+                </li>
+                <hr width="2000px" style="text-align: center; margin-left: 160px; margin-top: 5px; border: 0.5px solid rgb(0, 0, 0)">
+            </ul>
+        </div>
+
+        <section class = "login-form" style="display: flex; justify-content: center; align-items: center; height: 80vh;">
+            <div class = "text">
+                <img src="{% static 'mold_logo.png' %}" height=auto width="240" alt="몰드 로고" style="margin-bottom: 15px">
+                <h2> ADAPT TO THE <br> NEW SURROUNDINGS </h2>
+            </div>
+            <div class = "idpw">
+                <form action="{% url 'login' %}" style="margin-left: 80px; width: 85%; height: 90%; padding: 20px 40px 20px; background-color: transparent; border: 1px solid #D7DFEC; border-radius: 4px; font-size: 18px; color:#4B73FF;" method="post">
+                    {% csrf_token %}
+                    {{ form.as_p }}
+                    <button type="submit" style="width: 100%; height: 50px; background: #4B73FF;
+                    color:#fff; font-size: 20px; border: none; border-radius: 4px; cursor: pointer;">LOGIN</button>
+                </form>
+                <!-- <div class = "int-area" style="margin-left: 80px;">
+                   <input type = "text" name = "id" id = "id" placeholder="User Name을 입력하세요." autocomplete="off" required>
+                </div>
+                <div class = "int-area" style="margin-left: 80px;">
+                    <input type = "password" name = "pw" id = "pw" placeholder="Password를 입력하세요." autocomplete="off" required>
+                </div>
+                <div class ="btn-area" style="margin-top: 20px; margin-left: 80px;">
+                    <a href="{% url 'home' %}">
+                        <button type = "submit" style="width: 100%; height: 50px; background: #4B73FF; color:#fff; font-size: 20px; border: none; border-radius: 4px; cursor: pointer;" >LOGIN</button></a>
+                </div> -->
+                <div class = "caption" style="margin-top:  20px; text-align: left;">
+                    <!-- 회원가입 -->
+                    {% if not user.is_authenticated %}
+                    <p><a href="{% url 'register' %}" style= "font-size:16px; color: #4B73FF; text-decoration: none; margin-left: 80px;">Mold 회원가입 ></a></p>
+                    {% endif %}
+                </div>
+            </div>
+        </section>
+        <footer class="bd-footer py-3 mt-3 bg-light" >
+            <div class="container py-3" style="margin-top: 30px;">
+                <div class="row">
+                    <div class="mb-3">
+                        <img src="{% static 'mold_logo.png' %}" width="100px"><br>
+                        <div class="footer-copyright py-3">Designed and built with all the love in the world <br>by the MOLD team with the help of our contributors.</div>
+                        <p>
+                            새로운 환경에 적응해야 하는 사회 초년생들이 <br>
+                            더 넓은 사회에서 예의 바른 언어를 구사하는 것을 돕는,<br>
+                            사회 생활 A to Z 가이드 웹사이트<br>
+                        </p>
+                            <p style="color: #838383;">ⓒ 2021. MOLD all rights reserved.</p> 
+                    </div>
+                </div>
+            </div>
+        </footer>
+    </body>
+</html>

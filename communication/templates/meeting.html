@@ -1,0 +1,120 @@
+{% load static %}
+<!doctype html>
+<html>
+    <head>
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-KyZXEAg3QhqLMpG8r+8fhAXLRk2vvoC2f3B09zVXn8CA5QIVfZOJ3BCsw2P0p/We" crossorigin="anonymous">
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Noto+Sans&family=Noto+Sans+KR:wght@100;300;400;500&display=swap" rel="stylesheet">
+        <style>
+            input {
+                text-align: center; 
+                height: 30px;
+            }
+            #blue {
+                color: #4B73FF
+            }
+            #lgray {
+                color: #838383
+            }
+            * {
+                font-family: 'Noto Sans', 'Noto Sans KR', sans-serif;
+            }
+        </style>
+    </head>
+    <body>
+        <div style="display: block; margin-top: 10px;">
+            <ul class="nav justify-content">
+                <img src="{% static 'mold_logo.png' %}" height="36" width="90" alt="몰드 로고" style="margin: 36px; margin-bottom: 15px">
+                <li class="nav-item" style="padding: 22px 22px 0px 610px;">
+                    <a class="nav-link" id="lgray" href="{% url 'home' %}">About MOLD</a>
+                </li>
+                <li class="nav-item" style="padding: 22px 22px 0px 22px;">
+                    <a class="nav-link" id="blue" href="{% url 'template' %}">Communication</a>
+                </li>
+                <li class="nav-item" style="padding: 22px 22px 0px 22px;">
+                    <a class="nav-link" id="lgray" href="{% url 'communityhome' %}">Community</a>
+                </li>
+                <li class="nav-item" style="padding: 22px 22px 0px 22px;">
+                    {% if not user.is_authenticated %}
+                    <a class="nav-link" id="lgray" href="{% url 'login' %}" tabindex="-1">Log In</a>
+                    {% endif %}
+                    {% if user.is_authenticated %}
+                    <a class="nav-link" id="lgray" href="{% url 'article' %}" tabindex="-1">My Page</a>
+                    {% endif %}
+                </li>
+                <hr width="2000px" style="text-align: center; margin-left: 160px; margin-top: 5px; border: 0.5px solid rgb(0, 0, 0)">
+            </ul>
+        </div>
+        <div style="display: grid; grid-template-columns: 17% 17% 66%; margin-top: 15px;">
+            <div style="padding-left: 3px; padding-top: 35px; background-color: #4B73FF; color: white; height: 100%; border-radius: 0px 15px 0px 0px / 0px 15px 0px 0px">
+                <h6 style="padding-left: 30px; font-weight: 700;">Communication</h6>
+                <br>
+                <ul style="list-style: none; padding-left: none">
+                    <li><a href="{% url 'template' %}" style="text-decoration: none; color: #C4C4C4">Add Templates</a></li><br>
+                    <li>E-mail</li><br>
+                </ul>
+            </div>
+            <div style="padding-left: 5px; padding-top: 35px; background-color: #F8F8F9; height: 100%; border-radius: 15px 15px 0px 0px / 15px 15px 0px 0px">
+                <h6 style="padding-left: 16px; font-weight: 700; color: #323232">Progress</h6>
+                <p style="padding: 25px 0px 4px 16px; font-size: 14px; color: #323232">누구에게 보낼 예정인가요?</p>
+                <ul class="list-group" style="padding: 0px 13px; font-size: 14px">
+                    <li class="list-group-item" style="background-color: #4B73FF; color: white;">교수님</li>
+                    <li class="list-group-item">조교님 (업데이트 예정)</li>
+                </ul>
+            </div>
+            <div style="margin: 20px 29px 0px 25px; font-size: 14px;">
+                <ul class="nav nav-tabs">
+                    <li class="nav-item">
+                        <a class="nav-link" id="lgray" href="{% url 'grade' %}">성적문의</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" id="blue" href="">면담요청</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" id="lgray" href="{% url 'attendance' %}">출결확인</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" id="lgray" href="{% url 'recommendation' %}">추천서요청</a>
+                    </li>
+                </ul>
+                <form action="{% url 'createmeeting' %}" method="POST" style="margin: 20px; padding: 5px;">
+                    {% csrf_token %}
+                    <h6 style="margin-top: 5px; color: #323232">제목</h6>
+                    <input name="title" type="text" placeholder="학과 / 학번 / 이름" size="30" style="margin: 6px 9px 14px 0px">면담 요청 드립니다.<br><br>
+    
+                    <h6 style="margin-bottom: 12px; color: #323232">내용</h6>
+                    <p>안녕하세요, 교수님.</p>
+                    <p><input name="sending" type="text" style="margin-right: 5px" placeholder="학과 / 학번 / 이름" size="20">입니다.</p><br>
+
+                    <p><input name="background" placeholder="면담 요청 배경 설명" size="70" type="text"></p>
+                    <p>교수님께서 가능하시다면 <input name="time" placeholder="면담 예상 시간" style="margin: 0px 5px 0px 5px" size="20" type="text">정도 교수님 연구실에 방문하여 이야기 나눠볼 수 있을까요?</p>
+                    <p>교수님께서 면담 가능한 시간을 말씀해주시면 그 때 찾아뵙도록 하겠습니다.</p><br>
+
+                    <p>항상 건강 유의하시고, 행복한 하루 되시길 바랍니다. 감사합니다.</p>
+                    <p><input name="name" style="margin-right: 3px" placeholder="이름" size="10" type="text"> 올림.</p>
+                    {% if user.is_authenticated %}
+                    <button type="submit" class="btn btn-primary" style="margin-top: 23px; background-color: #4b73ff;">저장하기</button>
+                    {% endif %}
+                    <br><br><br><br>
+                </form>
+            </div>
+        </div>
+        <footer class="bd-footer py-3 mt-3 bg-light" >
+            <div class="container py-3" style="margin-top: 30px;">
+                <div class="row">
+                    <div class="mb-3">
+                        <img src="{% static 'mold_logo.png' %}" width="100px"><br>
+                        <div class="footer-copyright py-3">Designed and built with all the love in the world <br>by the MOLD team with the help of our contributors.</div>
+                        <p>
+                            새로운 환경에 적응해야 하는 사회 초년생들이 <br>
+                            더 넓은 사회에서 예의 바른 언어를 구사하는 것을 돕는,<br>
+                            사회 생활 A to Z 가이드 웹사이트<br>
+                            </p>
+                            <p style="color: #838383;">ⓒ 2021. MOLD all rights reserved.</p> 
+                    </div>
+                </div>
+            </div>
+        </footer>
+    </body>
+</html>

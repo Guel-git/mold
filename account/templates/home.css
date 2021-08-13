@@ -1,0 +1,35 @@
+.brandidentity {position:absolute; top:50%; left:50%; transform:translate(-50%,-50%);}
+.brandidentity {max-width:1200px; width:100%; margin:0 auto;}
+.brandidentity > ul {font-size:0;}
+.brandidentity > ul > li {display:inline-block; vertical-align:top; width:33.3%;}
+.brandidentity > ul > li > a {display:block; width:auto; text-decoration: none; margin:5px;}
+.brandidentity > ul > li > a .screen {position:relative; overflow:hidden;}
+.brandidentity > ul > li > a .screen .top {position:absolute; bottom:150%; left:30px; z-index:2; color:#fff; font-size:26px; font-weight:900; transition:all .35s;}
+.brandidentity > ul > li > a .screen .bottom {position:absolute; top:150%; left:30px; z-index:2; color:#fff; font-size:12px; transition:all .35s;}
+.brandidentity > ul > li > a .screen img {width:30%;}
+.brandidentity > ul > li > a .screen::after {content:''; display:block; position:absolute; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,.5); z-index:1;opacity:0; transition:all .35s;}
+.brandidentity > ul > li > a:hover .top {bottom:52%;}
+.brandidentity > ul > li > a:hover .bottom {top:52%;}
+.brandidentity > ul > li > a:hover .screen::after {opacity:1;}
+
+
+.brandidentity {
+    position: absolute; 
+    top:50%; 
+    left:50%; 
+    transform:translate(-50%,-50%);
+    max-width:1200px; 
+    width:100%; 
+    margin:0 auto;
+}
+.brand{font-size:0; list-style:none;}
+.brandidentity ul li {display:inline-block; vertical-align:top; list-style: none; width:33.3%;}
+.brandidentity ul li  a {display:block; width:auto;  margin:5px;}
+.screen {position: relative; overflow:hidden;}
+.top {position:absolute; bottom:150%; left:30px; z-index:2; color:#000; font-size:20px; font-weight:200; transition:all .35s;}
+.bottom {position:absolute; top:150%; left:30px; z-index:2; color:#000; font-size:14px; transition:all .35s;}
+#img {width:100%; height: 100%;}
+.screen::after {content:''; display:block; position:absolute; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,.5); z-index:1;opacity:0; transition:all .35s;}
+a:hover .top {bottom:52%;}
+a:hover .bottom {top:52%;}
+a:hover .screen::after {opacity:1;}
